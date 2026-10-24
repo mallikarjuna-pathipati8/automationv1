@@ -26,12 +26,11 @@
     validate()
     {
         if [ "$1" -ne 0 ]; then
-        echo -e "${R}${2}..Failed${N}" | tee -a &>> $log_file
+        echo -e "${R}${2}..Failed${N}" | tee -a $log_file
         exit 1
         else 
-        echo -e "${G}${2}..SUCCESS${N}" | tee -a &>> $log_file
+        echo -e "${G}${2}..SUCCESS${N}" | tee -a $log_file
         fi
     }
-
     cp mongo.repo /etc/yum.repos.d/mongo.repo
     validate $? "Adding Mongo Repo"
