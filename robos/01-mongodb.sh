@@ -26,10 +26,10 @@
     validate()
     {
         if [ "$1" -ne 0 ]; then
-        echo -e "${R}${2}..Failed" | tee -a &>> $log_file
-        exit1
+        echo -e "${R}${2}..Failed${N}" | tee -a &>> $log_file
+        exit 1
         else 
-        echo -e "${G}${2}..SUCCESS" | tee -a &>> $log_file
+        echo -e "${G}${2}..SUCCESS${N}" | tee -a &>> $log_file
         fi
     }
 
