@@ -12,12 +12,13 @@ N="\e[0m"
 for instance in $@
 do
     echo "Installing instance is :${instance}"
-    instance_id=$(aws ec2 run-instances \
-  --image-id "$ami_id" \
-  --instance-type "$instance_type" \
-  --security-groups "roboshop-common" "$instance"\
-  --query 'Instances[0].InstanceId' \
-  --output text)
+    instance_id=$( aws ec2 run-instances \
+      --image-id "$ami_id" \
+      --instance-type "$instance_type" \
+      --security-groups "roboshop-common" "$instance"\
+      --query 'Instances[0].InstanceId' \
+      --output text
+  )
   
 done
 echo "instance id :${instance_id}"
