@@ -42,5 +42,5 @@
     systemctl start mongod &>> $log_file
     validate $? "enable and start mongodb"
 
-    sed -i 's/127.0.0.1/0.0.0.0/g' mongod.conf &>> $log_file
+    sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> $log_file
     validate $? "Replace  mongod.conf with 127.0.0.1 with 0.0.0.0"
