@@ -9,9 +9,9 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
-for instance in $@
+for instance in "$@"
 do
-    echo "Installing instance is :${instance}"
+    echo "${Y}Installing instance is :${instance}${N}"
     instance_id=$(aws ec2 run-instances \
       --image-id "$ami_id" \
       --instance-type "$instance_type" \
@@ -20,5 +20,5 @@ do
       --query 'Instances[0].InstanceId' \
       --output text
   )
-  echo "instance id :${instance_id}"
+  echo "${G}instance id :${instance_id}${N}"
 done
