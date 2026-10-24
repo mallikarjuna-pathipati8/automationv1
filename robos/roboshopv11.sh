@@ -22,16 +22,16 @@ do
   )
   echo -e "${G}instance id :${instance_id}${N}"
 
-  if [ $instance -ne "frontend" ]; then
+  if [ "$instance" != "frontend" ]; then
             IP=$(aws ec2 describe-instances \
               --instance-ids $instance_id  \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --query 'Reservations[*].Instances[*].PrivateIpAddress' \
               --output text)
               r53_record=$instance.$domain_name
     else 
             IP=$(aws ec2 describe-instances \
               --instance-ids $instance_id  \
-              --query 'Reservations[*].Instances[*].PrivateIpAddress' \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
               r53_record=$domain_name
   fi
@@ -42,16 +42,15 @@ do
       {
         "Action": "UPSERT",
         "ResourceRecordSet": {
-          "Name": "r53_record",
+          "Name": "$'r53_record'",
           "Type": "A",
           "TTL": 1,
           "ResourceRecords": [
-            {"Value": "$IP"}
+            {"Value": "$'IP'"}
           ]
         }
       }
     ]
-  }'      
-  
+  }'       
 
 done
