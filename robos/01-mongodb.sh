@@ -32,14 +32,15 @@
         echo -e "${G}${2}..SUCCESS${N}" | tee -a $log_file
         fi
     }
-    cp mongo.repo /etc/yum.repos.d/mongo.repo
+    cp mongo.repo /etc/yum.repos.d/mongo.repo 
     validate $? "Adding Mongo Repo"
 
-    dnf install mongodb-org -y
+    dnf install mongodb-org -y &>> $log_file
     validate $? "Installing Mongodb"
 
-    systemctl enable mongod
-    systemctl start mongod
+    systemctl enable mongod &>> $log_file
+    systemctl start mongod &>> $log_file
     validate $? "enable and start mongodb"
 
-    
+    sed -i 's/127.0.0.1/0.0.0.0/g' mongod.conf &>> $log_file
+    validate $? "Replace  mongod.conf with 127.0.0.1 with 0.0.0.0"
