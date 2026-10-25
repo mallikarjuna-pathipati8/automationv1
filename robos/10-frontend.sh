@@ -40,44 +40,39 @@
                 fi
             }
 
-            echo "$(timestamp) [INFO] Script is started" | tee -a "$log_file"
-         
-
+        echo "$(timestamp) [INFO] Script is started" | tee -a "$log_file"
+         dnf module disable nginx -y &>>"$log_file"
+         dnf module enable nginx:1.26 -y &>>"$log_file"
+         dnf install nginx -y &>>"$log_file"
+         validate $? "Installing  nginx"
             
-        
-        id roboshop &>>"$log_file"
-        if [ $? -ne 0 ]; then
-            useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-            validate $? "Creating System User"
-            else 
-            echo "System user alredy created ${Y}Skipping${N}"
-        fi
+        systemctl enable nginx &>>"$log_file"
+        validate $? "Enable nginx"
+        systemctl start nginx &>>"$log_file"
+        validate $? "Start  nginx"
 
-        rm -rf /app &>>"$log_file"
-        validate $? "Deleting old /app files"
+         rm -rf /usr/share/nginx/html/* &>>"$log_file"
+        validate $? "Removing default content"
 
-        mkdir -p /app &>>"$log_file"
-        validate $? "Deleting old /app files"
 
+       
         curl -L -o /tmp/frontend.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
-        validate $? "Downloading shiipng project"
-
-
-        cd /app
+        cd /usr/share/nginx/html
         unzip -o /tmp/frontend.zip -d /app &>>"$log_file"
-        validate $? "Unzipping shiipng project"
+        validate $? "Downloading and unzipping frontend code
 
     
-
-        
-
-        sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/frontend.service"
+        sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/roboshop.conf"
         validate $? "updating frontend service"
 
-        cp "$script_dir/frontend.service" /etc/systemd/system/frontend.service
-        validate $? "copying frontend service"
+        cp "$script_dir/roboshop.conf" /etc/systemd/system/roboshop.conf
+        validate $? "Copied roboshop config"
 
-        
+        nginx -t &>> $logs_file
+        validate $? "Nginx Configuration"
+
+        systemctl restart nginx
+        validate $? "Restarting nginx"
         
         systemctl daemon-reload &>>"$log_file"
             systemctl enable frontend &>>"$log_file"
