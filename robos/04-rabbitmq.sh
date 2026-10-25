@@ -51,8 +51,8 @@
         validate $? "rabbitmq Start" 
 
         # Verify roboshop user exist 
-        rabbitmqctl list_users | grep -qw "roboshop" &>> "$log_file"
-        echo "$?"
+        rabbitmqctl list_users | grep -qw "roboshop"
+        
         if [ "$?" -ne 0 ]; then       
         rabbitmqctl add_user roboshop roboshop123 &>> "$log_file"
         validate $? "rabbitmq add user" 
