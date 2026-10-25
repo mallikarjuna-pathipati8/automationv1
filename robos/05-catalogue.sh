@@ -64,7 +64,7 @@
         validate $? "Downloading Catalogue"
 
         cd /app
-        unzip /tmp/catalogue.zip "$log_file"
+        unzip -o /tmp/catalogue.zip -d /app &>> "$log_file"
         validate $? "Unzipping Catalogue"
 
         cd /app
