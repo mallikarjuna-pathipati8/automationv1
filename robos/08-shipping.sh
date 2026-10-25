@@ -111,7 +111,7 @@
         
         systemctl daemon-reload &>>"$log_file"
             systemctl enable shipping &>>"$log_file"
-            systemctl start shipping &>>"$log_file"
+            systemctl restart shipping &>>"$log_file"
             validate $? "shipping enable and start"
             
         echo "$(timestamp) [INFO] Script Completed in Seconds ${SECONDS}" | tee -a "$log_file"
