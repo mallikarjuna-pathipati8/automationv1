@@ -4,7 +4,7 @@
         user_id=$(id -u)
 
         #Log Folder and Log File
-        log_folder="/var/log/mongodb"
+        log_folder="/var/log/roboshop"
         log_file="${log_folder}/$(basename "$0").log"
         #Display Colors
         R="\e[31m"
@@ -50,13 +50,21 @@
         systemctl start rabbitmq-server &>> "$log_file"
         validate $? "rabbitmq Start" 
 
+        # Verify roboshop user exist 
+        rabbitmqctl list_users | grep -qw "roboshop" &>> "$log_file"
+        echo "$?"
+        if [ "$?" -ne 0 ]; then       
         rabbitmqctl add_user roboshop roboshop123 &>> "$log_file"
         validate $? "rabbitmq add user" 
+        else 
+        echo -e "$(timestamp) [INFO] User is alredy exist ${Y}Skipping${N}"
+        fi
+
         rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> "$log_file"
         validate $? "rabbitmq Set Permission" 
 
         echo "$(timestamp) [INFO] Script Completed in Seconds ${SECONDS}" | tee -a "$log_file"
-        echo "$(timestamp) [INFO] Script is ended" | tee -a "$log_file"
+        echo  "$(timestamp) [INFO] Script is ended" | tee -a "$log_file"
 
 
 
