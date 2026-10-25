@@ -74,10 +74,7 @@
         systemctl restart nginx
         validate $? "Restarting nginx"
         
-        systemctl daemon-reload &>>"$log_file"
-            systemctl enable frontend &>>"$log_file"
-            systemctl restart frontend &>>"$log_file"
-            validate $? "frontend enable and start"
+       
             
         echo "$(timestamp) [INFO] Script Completed in Seconds ${SECONDS}" | tee -a "$log_file"
         echo "$(timestamp) [INFO] Script is ended" | tee -a "$log_file"
