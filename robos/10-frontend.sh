@@ -59,7 +59,7 @@
         curl -L -o /tmp/frontend.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
         cd /usr/share/nginx/html
         unzip -o /tmp/frontend.zip -d /app &>>"$log_file"
-        validate $? "Downloading and unzipping frontend code
+        validate $? "Downloading and unzipping frontend code"
 
     
         sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/roboshop.conf"
