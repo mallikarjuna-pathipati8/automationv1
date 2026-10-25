@@ -64,11 +64,11 @@
         validate $? "Downloading Catalogue"
 
         cd /app
-        unzip -o /tmp/catalogue.zip -d /app &>> "$log_file"
+        unzip /tmp/catalogue.zip "$log_file"
         validate $? "Unzipping Catalogue"
 
         cd /app
-        npm install "$log_file"
+        npm install &>>"$log_file"
         validate $? "Installating dependencies"
 
         echo "${script_dir}"
@@ -99,6 +99,6 @@
 
         systemctl restart catalogue
         validate %? "Restarting catalogue"
-
+        
         echo "$(timestamp) [INFO] Script Completed in Seconds ${SECONDS}" | tee -a "$log_file"
         echo "$(timestamp) [INFO] Script is ended" | tee -a "$log_file"
