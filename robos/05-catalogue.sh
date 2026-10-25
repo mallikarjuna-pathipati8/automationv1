@@ -64,7 +64,7 @@
         validate $? "Downloading Catalogue"
 
         cd /app
-        unzip /tmp/catalogue.zip "$log_file"
+        unzip -o /tmp/catalogue.zip -d /app &>> "$log_file"
         validate $? "Unzipping Catalogue"
 
         cd /app
@@ -99,6 +99,6 @@
 
         systemctl restart catalogue
         validate %? "Restarting catalogue"
-        
+
         echo "$(timestamp) [INFO] Script Completed in Seconds ${SECONDS}" | tee -a "$log_file"
         echo "$(timestamp) [INFO] Script is ended" | tee -a "$log_file"
