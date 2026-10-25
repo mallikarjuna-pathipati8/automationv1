@@ -68,7 +68,7 @@
         cp "$script_dir/roboshop.conf" /etc/systemd/system/roboshop.conf
         validate $? "Copied roboshop config"
 
-        nginx -t &>> $logs_file
+        nginx -t  &>>"$log_file"
         validate $? "Nginx Configuration"
 
         systemctl restart nginx
