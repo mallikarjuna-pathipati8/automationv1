@@ -70,7 +70,7 @@
         npm install
         validate $? "Installing  cart dependencies"
 
-        sed -i "s/DOMAIN_MAME/$domain_name/g" "$script_dir/cart.service"
+        sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/cart.service"
         validate $? "updating cart service"
         cp "$script_dir/cart.service" /etc/systemd/system/cart.service
         validate $? "copying cart service"
